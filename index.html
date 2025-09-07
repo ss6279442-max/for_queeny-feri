@@ -1,0 +1,87 @@
+import React, { useState } from 'react';
+import './App.css';
+
+function App() {
+  const colors = ['black', 'white', 'pink', 'skyblue'];
+  const [message, setMessage] = useState('Do you want to see something fun?');
+  const [bgColor, setBgColor] = useState('black');
+  const [showFunButtons, setShowFunButtons] = useState(false);
+  const [noButtonPosition, setNoButtonPosition] = useState({ top: '50%', left: '55%' });
+  const [confessions, setConfessions] = useState([]);
+
+  const confessionTexts = [
+    'I love you ❤️',
+    'You have beautiful eyes 😍',
+    'You make me smile 😊',
+    'You are amazing 💖',
+    'I like your style 😎',
+    'You are incredible ✨',
+    'You are my sunshine ☀️',
+    'You are awesome 😘',
+    'I adore you 💕',
+    'You are perfect 😇',
+    'I can’t stop thinking about you 😌',
+    'You are my favorite person 💗',
+    'I feel lucky to know you 🍀',
+    'You brighten my day ☀️',
+    'You’re the best thing ever 😎',
+    'You have the cutest smile 😁',
+    'I appreciate you ❤️‍🔥',
+    'You make life better 💖',
+    'I love your laugh 😂',
+    'You are unforgettable 🌟'
+  ];
+
+  const handleYesClick = () => {
+    setMessage('😈 Confessions incoming...');
+    setShowFunButtons(true);
+    const interval = setInterval(() => {
+      const randomText = confessionTexts[Math.floor(Math.random() * confessionTexts.length)];
+      const top = Math.floor(Math.random() * 90) + '%';
+      const left = Math.floor(Math.random() * 90) + '%';
+      setConfessions(prev => [...prev, { text: randomText, top, left, id: Date.now() + Math.random() }]);
+    }, 300);
+  };
+
+  const handleFunClick = (action) => {
+    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+    setBgColor(randomColor);
+  };
+
+  const handleNoHover = () => {
+    const top = Math.floor(Math.random() * 70 + 10) + '%';
+    const left = Math.floor(Math.random() * 70 + 10) + '%';
+    setNoButtonPosition({ top, left });
+  };
+
+  return (
+    <div className="App" style={{ backgroundColor: bgColor, color: bgColor === 'black' ? 'white' : 'black', overflow: 'hidden', position: 'relative' }}>
+      <h1>Fun Button Page 😺</h1>
+      <p>{message}</p>
+      {!showFunButtons ? (
+        <div className="buttons">
+          <button onClick={handleYesClick}>Yes</button>
+          <button
+            onMouseEnter={handleNoHover}
+            style={{ position: 'absolute', top: noButtonPosition.top, left: noButtonPosition.left }}
+          >
+            No
+          </button>
+        </div>
+      ) : (
+        <div className="buttons">
+          <button onClick={() => handleFunClick('fun')}>Fun</button>
+          <button onClick={() => handleFunClick('surprise')}>Surprise</button>
+          <button onClick={() => handleFunClick('random')}>Random</button>
+        </div>
+      )}
+      {confessions.map(c => (
+        <span key={c.id} style={{ position: 'absolute', top: c.top, left: c.left, fontSize: '1.2rem', fontWeight: 'bold', pointerEvents: 'none', transition: 'all 1s ease' }}>
+          {c.text}
+        </span>
+      ))}
+    </div>
+  );
+}
+
+export default App;
