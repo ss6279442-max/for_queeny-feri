@@ -13,7 +13,6 @@
         align-items: center;
         font-family: 'Baloo 2', cursive;
         background: linear-gradient(135deg, #000000, #ffffff, #ffb6c1, #87ceeb);
-        background-size: 400% 400%;
         overflow: hidden;
     }
 
@@ -52,6 +51,28 @@
 const hearts = ["💙","🤍","🖤","🩷"];
 const sparkles = ["✨","🌟"];
 const loveMessages = ["Love You Feri 💖"];
+const mainTexts = [
+  "Your eyes are so mesmerizing 💙",
+  "You are unbelievably precious 💖",
+  "Your smile lights up the world ✨",
+  "Being around you feels magical 💫",
+  "You are an angel 💐",
+  "Your laughter is the sweetest melody 🌸",
+  "Every moment with you is special 💛",
+  "You make hearts flutter 💙",
+  "Your kindness shines bright ✨",
+  "You are enchanting in every way 💖",
+  "So cute and lovely 🌟",
+  "Your presence is calming and warm 💐",
+  "You are a beautiful melody 💙",
+  "Soft, gentle, and amazing 💖",
+  "You make everything brighter 🌸",
+  "Forever unforgettable 💫",
+  "Every glance at you is magic 💛",
+  "You are dreamy and sweet 💙",
+  "So precious, like a rare gem 💖",
+  "The world is better with you 🌟"
+];
 
 function getRandom(arr) {
     return arr[Math.floor(Math.random() * arr.length)];
@@ -97,12 +118,15 @@ function tapBoom(x, y) {
 }
 
 // Continuous background floating elements
-setInterval(createFloat, 400);
+setInterval(createFloat, 300);
 
 // Tap/Click interaction
 document.body.addEventListener("click", (e) => {
     tapBoom(e.clientX, e.clientY);
 });
+
+// Optional: random center text on load (you can pick one randomly)
+document.getElementById('main-text').textContent = getRandom(mainTexts);
 </script>
 
 </body>
