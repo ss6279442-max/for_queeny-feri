@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For Feri</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600&family=Pacifico&family=Fredoka+One&display=swap" rel="stylesheet">
+<style>
+    body {
+        margin: 0;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: 'Baloo 2', cursive;
+        overflow: hidden;
+        background: linear-gradient(135deg, #87ceeb, #ffb6c1, #000000, #ff69b4);
+        background-size: 400% 400%;
+        animation: gradientShift 20s ease infinite;
+        transition: background 2s ease-in-out;
+    }
+
+    @keyframes gradientShift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    #text-box {
+        text-align: center;
+        font-size: 2rem;
+        font-weight: bold;
+        padding: 25px 50px;
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.7);
+        box-shadow: 0 0 30px rgba(0,0,0,0.2);
+        cursor: pointer;
+        transition: transform 0.4s, opacity 0.5s, box-shadow 0.4s, font-family 0.5s;
+    }
+
+    #text-box:hover {
+        transform: scale(1.1) rotate(-2deg);
+        box-shadow: 0 0 40px rgba(0,0,0,0.3);
+    }
+
+    .float {
+        position: absolute;
+        font-size: 2rem;
+        animation: floatUp 6s linear infinite;
+        opacity: 0.7;
+        pointer-events: none;
+    }
+
+    @keyframes floatUp {
+        from { transform: translateY(100vh) scale(0.6); opacity: 1; }
+        to { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+    }
+</style>
+</head>
+<body>
+
+<div id="text-box">Click Me 💙🤍🖤🩷</div>
+
+<script>
+const texts = [
+    "Your eyes are mesmerizing 💙",
+    "You are so beautiful and kind 💐",
+    "There’s something magical about your smile ✨",
+    "Being around you feels like sunshine 🌸",
+    "You have a heart full of light 💖",
+    "First sight felt like magic 💫",
+    "Your laughter is so infectious 💙",
+    "You make ordinary moments extraordinary 💐",
+    "The world feels softer with you in it 🌸",
+    "Your presence is calming and warm ✨",
+    "So precious, like a rare gem 💖",
+    "Your kindness shines brighter than stars 💫",
+    "You are unforgettable 💙",
+    "Every glance at you is a little poem 💐",
+    "Soft, gentle, and incredibly lovely 🌸",
+    "You make hearts flutter 💖",
+    "There’s a quiet magic about you ✨",
+    "You are a beautiful melody 💫",
+    "Seeing you is like seeing a sunrise 💙",
+    "You are enchanting in every way 💐"
+];
+
+const fonts = ['Baloo 2', 'Pacifico', 'Fredoka One'];
+const textBox = document.getElementById("text-box");
+const hearts = ["💙","🤍","🖤","🩷"];
+const sparkles = ["✨","🌟"];
+
+function getRandom(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function changeText() {
+    textBox.style.opacity = 0;
+    setTimeout(() => {
+        textBox.textContent = getRandom(texts);
+        textBox.style.color = getRandom(hearts.concat(['#ff69b4','#87ceeb','#000']));
+        textBox.style.fontFamily = getRandom(fonts);
+        textBox.style.opacity = 1;
+    }, 300);
+}
+
+function createFloat() {
+    const el = document.createElement("div");
+    el.classList.add("float");
+    el.textContent = Math.random() > 0.5 ? getRandom(hearts) : getRandom(sparkles);
+    el.style.left = Math.random() * 100 + "vw";
+    el.style.fontSize = (16 + Math.random() * 24) + "px";
+    el.style.animationDuration = (4 + Math.random() * 4) + "s";
+    el.style.opacity = 0.6 + Math.random() * 0.3;
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 6000);
+}
+
+function tapBoom(x, y) {
+    for(let i=0;i<5;i++){
+        const el = document.createElement("div");
+        el.classList.add("float");
+        el.textContent = Math.random() > 0.5 ? getRandom(hearts) : getRandom(sparkles);
+        el.style.left = x + (Math.random()*60-30) + "px";
+        el.style.top = y + (Math.random()*60-30) + "px";
+        el.style.fontSize = (16 + Math.random()*24) + "px";
+        el.style.animationDuration = (2 + Math.random()*2) + "s";
+        document.body.appendChild(el);
+        setTimeout(()=>el.remove(),3000);
+    }
+}
+
+// Continuously float hearts and sparkles
+setInterval(createFloat, 500);
+
+// Change text on click with tap/boom effect
+textBox.addEventListener("click", (e) => {
+    changeText();
+    tapBoom(e.clientX, e.clientY);
+});
+
+// Initial text
+changeText();
+</script>
+
+</body>
+</html>
