@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For Feri</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700&display=swap" rel="stylesheet">
+<style>
+    body {
+        margin: 0;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: 'Baloo 2', cursive;
+        background: linear-gradient(135deg, #000000, #ffffff, #ffb6c1, #87ceeb);
+        background-size: 400% 400%;
+        overflow: hidden;
+    }
+
+    #main-text {
+        text-align: center;
+        font-size: 2.2rem;
+        font-weight: 700;
+        color: black;
+        padding: 25px 50px;
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.8);
+        box-shadow: 0 0 25px rgba(0,0,0,0.2);
+        z-index: 10;
+        user-select: none;
+    }
+
+    .float {
+        position: absolute;
+        font-size: 18px;
+        animation: floatUp linear infinite;
+        opacity: 0.6;
+        pointer-events: none;
+    }
+
+    @keyframes floatUp {
+        from { transform: translateY(100vh) rotate(0deg) scale(0.6); opacity: 1; }
+        to { transform: translateY(-10vh) rotate(360deg) scale(1.2); opacity: 0; }
+    }
+</style>
+</head>
+<body>
+
+<div id="main-text">Your eyes are so mesmerizing 💙</div>
+
+<script>
+const hearts = ["💙","🤍","🖤","🩷"];
+const sparkles = ["✨","🌟"];
+const loveMessages = ["Love You Feri 💖"];
+
+function getRandom(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function createFloat() {
+    const el = document.createElement("div");
+    el.classList.add("float");
+    const r = Math.random();
+    if(r < 0.5) el.textContent = getRandom(hearts);
+    else if(r < 0.8) el.textContent = getRandom(sparkles);
+    else el.textContent = getRandom(loveMessages);
+
+    el.style.left = Math.random() * 100 + "vw";
+    el.style.fontSize = (14 + Math.random() * 24) + "px";
+    el.style.animationDuration = (4 + Math.random() * 5) + "s";
+    el.style.opacity = 0.4 + Math.random() * 0.5;
+    el.style.transform = `rotate(${Math.random()*360}deg)`;
+
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 6000);
+}
+
+function tapBoom(x, y) {
+    for(let i=0;i<8;i++){
+        const el = document.createElement("div");
+        el.classList.add("float");
+        const r = Math.random();
+        if(r < 0.5) el.textContent = getRandom(hearts);
+        else if(r < 0.8) el.textContent = getRandom(sparkles);
+        else el.textContent = getRandom(loveMessages);
+
+        el.style.left = x + (Math.random()*80-40) + "px";
+        el.style.top = y + (Math.random()*80-40) + "px";
+        el.style.fontSize = (16 + Math.random()*24) + "px";
+        el.style.animationDuration = (2 + Math.random()*2) + "s";
+        el.style.transform = `rotate(${Math.random()*360}deg)`;
+        el.style.opacity = 0.6 + Math.random()*0.4;
+
+        document.body.appendChild(el);
+        setTimeout(()=>el.remove(),3000);
+    }
+}
+
+// Continuous background floating elements
+setInterval(createFloat, 400);
+
+// Tap/Click interaction
+document.body.addEventListener("click", (e) => {
+    tapBoom(e.clientX, e.clientY);
+});
+</script>
+
+</body>
+</html>
