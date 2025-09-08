@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Confessions for Queeny Feri 😈💕</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: black;
+    font-family: 'Poppins', sans-serif;
+    color: white;
+  }
+
+  #mainMessage {
+    font-size: 2rem;
+    font-weight: 600;
+    color: pink;
+    text-align: center;
+    animation: pulse 1s infinite alternate;
+  }
+
+  @keyframes pulse {
+    from { text-shadow: 0 0 10px pink, 0 0 20px hotpink; }
+    to { text-shadow: 0 0 20px cyan, 0 0 40px skyblue; }
+  }
+
+  .confession {
+    position: absolute;
+    font-size: 1.2rem;
+    font-weight: bold;
+    pointer-events: none;
+    animation: floatUp 4s forwards;
+  }
+
+  @keyframes floatUp {
+    from { opacity: 1; transform: translateY(0); }
+    to { opacity: 0; transform: translateY(-100px); }
+  }
+
+  .prankBtn {
+    padding: 12px 24px;
+    margin: 5px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    background: pink;
+    color: black;
+    transition: all 0.3s;
+  }
+
+  .prankBtn:hover {
+    transform: scale(1.2);
+    background: skyblue;
+  }
+</style>
+</head>
+<body>
+
+<div id="mainMessage">😈 Confessions Incoming...</div>
+<div id="prankButtons">
+  <button class="prankBtn" id="funBtn">Fun</button>
+  <button class="prankBtn" id="surpriseBtn">Surprise</button>
+  <button class="prankBtn" id="randomBtn">Random</button>
+</div>
+
+<script>
+const colors = ["black","white","pink","skyblue"];
+const confessions = [
+  "I love you ❤️","You have beautiful eyes 😍","You make me smile 😊",
+  "You are amazing 💖","You like my style 😎","You are incredible ✨",
+  "You are my sunshine ☀️","You are awesome 😘","I adore you 💕",
+  "You are perfect 😇","I can’t stop thinking about you 😌","You are my favorite person 💗",
+  "I feel lucky to know you 🍀","You brighten my day ☀️","You’re the best thing ever 😎",
+  "You have the cutest smile 😁","I appreciate you ❤️‍🔥","You make life better 💖",
+  "I love your laugh 😂","You are unforgettable 🌟",
+  // weighted Love you Feri
+  "Love you Feri 💕","Love you Feri 💕","Love you Feri 💕",
+  "Love you Feri 💕","Love you Feri 💕","Love you Feri 💕",
+  "Love you Feri 💕","Love you Feri 💕","Love you Feri 💕"
+];
+
+// blink tab title
+let toggle = true;
+setInterval(() => {
+  document.title = toggle ? "Confessions for Queeny Feri 😈💕" : "Love You 💕";
+  toggle = !toggle;
+}, 1000);
+
+// spawn confessions rapidly
+setInterval(() => {
+  for(let i=0;i<3;i++){ // spawn multiple at once
+    const conf = document.createElement("span");
+    conf.className = "confession";
+    conf.textContent = confessions[Math.floor(Math.random() * confessions.length)];
+    conf.style.top = Math.floor(Math.random() * 90) + "%";
+    conf.style.left = Math.floor(Math.random() * 90) + "%";
+    conf.style.color = colors[Math.floor(Math.random() * colors.length)];
+    document.body.appendChild(conf);
+    setTimeout(()=>conf.remove(),4000);
+  }
+}, 300);
+
+// prank buttons change background
+const funBtn = document.getElementById("funBtn");
+const surpriseBtn = document.getElementById("surpriseBtn");
+const randomBtn = document.getElementById("randomBtn");
+
+[funBtn, surpriseBtn, randomBtn].forEach(btn => {
+  btn.onclick = () => {
+    document.body.style.background = colors[Math.floor(Math.random()*colors.length)];
+    document.body.style.color = (document.body.style.background==="black")?"white":"black";
+  };
+});
+</script>
+
+</body>
+</html>
