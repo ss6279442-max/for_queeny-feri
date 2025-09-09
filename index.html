@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Eternal Love for Feri 💖🐥😈</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Pacifico&family=Press+Start+2P&family=Indie+Flower&family=Courier+Prime&display=swap" rel="stylesheet">
 <style>
   body {
     margin: 0;
@@ -65,8 +65,8 @@
   }
 
   @keyframes floatUp {
-    from { opacity: 1; transform: translateY(0); }
-    to { opacity: 0; transform: translateY(-150px); }
+    from { opacity: 1; transform: translateY(0) scale(1) rotate(0deg); }
+    to { opacity: 0; transform: translateY(-150px) scale(1.5) rotate(360deg); }
   }
 
   #mainMessage {
@@ -120,21 +120,30 @@ function isOverlapping(el1, el2) {
            r2.bottom < r1.top);
 }
 
-// No button runs away fully inside screen and avoids Yes button
-noBtn.addEventListener("mouseenter", () => {
+// Make No button untouchable (hover + click)
+function moveNoBtn() {
   const btnWidth = noBtn.offsetWidth;
   const btnHeight = noBtn.offsetHeight;
   const parentWidth = window.innerWidth;
   const parentHeight = window.innerHeight;
 
   let newLeft, newTop;
+  let attempts = 0;
+
   do {
     newLeft = Math.random() * (parentWidth - btnWidth);
     newTop = Math.random() * (parentHeight - btnHeight);
+
     noBtn.style.left = newLeft + "px";
     noBtn.style.top = newTop + "px";
+
+    attempts++;
+    if (attempts > 100) break;
   } while (isOverlapping(noBtn, yesBtn));
-});
+}
+
+noBtn.addEventListener("mouseenter", moveNoBtn);
+noBtn.addEventListener("click", moveNoBtn); // escape on click too
 
 // Yes button triggers Part Two
 yesBtn.addEventListener("click", () => {
@@ -143,7 +152,7 @@ yesBtn.addEventListener("click", () => {
   startChaos();
 });
 
-// Part Two Chaos (optimized)
+// Part Two Chaos
 function startChaos() {
   const colors = ["black","white","pink","skyblue","hotpink","cyan"];
   const loveText = "Love you Feri 💕";
@@ -157,20 +166,27 @@ function startChaos() {
     "You are special 💝"
   ];
 
+  const fonts = ["Poppins", "Pacifico", "Press Start 2P", "Indie Flower", "Courier Prime"];
+  const weights = ["400", "600", "700", "900"];
+  const styles = ["normal", "italic"];
+
   // Blinking tab title
   let toggle = true;
   setInterval(()=>{document.title = toggle?"The Eternal Love for Feri 💖🐥😈":"Love You 💕"; toggle=!toggle;},1000);
 
   // Continuous spawning
-  setInterval(spawnConfession, 50); // spawn a confession every 50ms
-  setInterval(spawnHeart, 200); // spawn a heart every 200ms
+  setInterval(spawnConfession, 50);
+  setInterval(spawnHeart, 200);
 
-  // On click: spawn extra confessions & hearts, change background
-  document.body.addEventListener("click", ()=>{
+  // On click or tap: spawn extra chaos
+  function chaosBurst() {
     for(let i=0;i<20;i++){ spawnConfession(); }
     for(let i=0;i<5;i++){ spawnHeart(); }
     document.body.style.background = colors[Math.floor(Math.random()*colors.length)];
-  });
+  }
+
+  document.body.addEventListener("click", chaosBurst);
+  document.body.addEventListener("touchstart", chaosBurst);
 
   function spawnConfession() {
     const conf = document.createElement("span");
@@ -180,6 +196,12 @@ function startChaos() {
     conf.style.left = Math.random()*90 + "%";
     conf.style.color = colors[Math.floor(Math.random()*colors.length)];
     conf.style.fontSize = (Math.random()*20+12)+"px";
+
+    // Random font + weight + style
+    conf.style.fontFamily = fonts[Math.floor(Math.random()*fonts.length)];
+    conf.style.fontWeight = weights[Math.floor(Math.random()*weights.length)];
+    conf.style.fontStyle = styles[Math.floor(Math.random()*styles.length)];
+
     document.body.appendChild(conf);
     setTimeout(()=>conf.remove(),6000);
   }
@@ -200,3 +222,5 @@ function startChaos() {
 
 </body>
 </html>
+
+  
