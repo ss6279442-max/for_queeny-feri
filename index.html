@@ -57,11 +57,12 @@
 
   .buttons button:hover { transform: scale(1.1); }
 
-  /* Fade-in/fade-out animation */
+  /* Smooth fade-in/fade-out animation */
   @keyframes fadeInOut {
-    0%   { opacity: 0; transform: scale(1); }
-    30%  { opacity: 1; transform: scale(1); }
-    100% { opacity: 0; transform: scale(1); }
+    0%   { opacity: 0; }
+    20%  { opacity: 1; }
+    80%  { opacity: 1; }
+    100% { opacity: 0; }
   }
 
   .confession, .heart {
@@ -69,23 +70,15 @@
     font-weight: bold;
     pointer-events: none;
     user-select: none;
-    animation: fadeInOut 1s forwards;
+    animation: fadeInOut 2s ease-in-out forwards;
   }
 
   #mainMessage {
     font-size: 2rem;
     font-weight: 600;
     text-align: center;
-    animation: pulse 1s infinite;
+    color: pink; /* static heading color */
     margin: 0;
-  }
-
-  @keyframes pulse {
-    0% { text-shadow: 0 0 10px pink, 0 0 20px hotpink; color: pink; }
-    25% { text-shadow: 0 0 15px cyan, 0 0 25px skyblue; color: skyblue; }
-    50% { text-shadow: 0 0 20px hotpink, 0 0 30px pink; color: hotpink; }
-    75% { text-shadow: 0 0 15px cyan, 0 0 25px skyblue; color: cyan; }
-    100% { text-shadow: 0 0 10px pink, 0 0 20px hotpink; color: pink; }
   }
 </style>
 </head>
@@ -157,18 +150,22 @@ function startChaos() {
   const weights = ["400", "600", "700", "900"];
   const styles = ["normal", "italic"];
 
-  // Tab title blink
+  // Tab title blink (optional)
   let toggle = true;
-  setInterval(()=>{document.title = toggle?"The Eternal Love for Feri 💖🐥😈":"Love You 💕"; toggle=!toggle;},1000);
+  setInterval(()=>{
+    document.title = toggle ? "The Eternal Love for Feri 💖🐥😈" : "Love You 💕";
+    toggle = !toggle;
+  },1000);
 
   // Continuous fade-in texts/hearts
   setInterval(spawnConfession, 200);
   setInterval(spawnHeart, 300);
 
-  // Mega burst on click/tap
+  // Mega burst + background color change on tap/click
   function megaBurst() {
-    for(let i=0; i<100; i++){ spawnConfession(); }
-    for(let i=0; i<100; i++){ spawnHeart(); }
+    for(let i=0; i<100; i++) spawnConfession();
+    for(let i=0; i<100; i++) spawnHeart();
+    document.body.style.background = colors[Math.floor(Math.random() * colors.length)];
   }
   document.body.addEventListener("click", megaBurst);
   document.body.addEventListener("touchstart", megaBurst);
@@ -176,7 +173,7 @@ function startChaos() {
   function spawnConfession() {
     const conf = document.createElement("span");
     conf.className = "confession";
-    conf.textContent = Math.random()<0.9? loveText : cuteLines[Math.floor(Math.random()*cuteLines.length)];
+    conf.textContent = Math.random()<0.9 ? loveText : cuteLines[Math.floor(Math.random()*cuteLines.length)];
     conf.style.top = Math.random()*90 + "%";
     conf.style.left = Math.random()*90 + "%";
     conf.style.color = colors[Math.floor(Math.random()*colors.length)];
@@ -185,7 +182,7 @@ function startChaos() {
     conf.style.fontWeight = weights[Math.floor(Math.random()*weights.length)];
     conf.style.fontStyle = styles[Math.floor(Math.random()*styles.length)];
     document.body.appendChild(conf);
-    setTimeout(()=>conf.remove(),1000);
+    setTimeout(()=>conf.remove(),2000); // fade duration match animation
   }
 
   function spawnHeart() {
@@ -197,7 +194,7 @@ function startChaos() {
     heart.style.fontSize = (Math.random()*30+15)+"px";
     heart.style.color = colors[Math.floor(Math.random()*colors.length)];
     document.body.appendChild(heart);
-    setTimeout(()=>heart.remove(),1000);
+    setTimeout(()=>heart.remove(),2000);
   }
 }
 </script>
