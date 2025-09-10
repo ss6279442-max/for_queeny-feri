@@ -19,55 +19,58 @@
     align-items: center;
   }
 
-  h1, p {
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 10px;
     text-align: center;
     color: black;
   }
 
-  h1 { font-size: 2rem; margin-bottom: 10px; }
-  p { font-size: 1.5rem; margin-bottom: 20px; }
+  p {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: black;
+  }
 
-  /* Buttons */
   .buttons {
     display: flex;
-    justify-content: center;
-    gap: 40px; /* keeps Yes and No apart */
+    gap: 20px;
     position: relative;
-    margin-top: 20px;
+    width: 100%;
+    height: 200px;
+    justify-content: center;
+    align-items: center;
   }
 
   .buttons button {
     padding: 12px 28px;
     border: none;
-    border-radius: 12px;
+    border-radius: 10px;
     font-size: 1.2rem;
     font-weight: 600;
     cursor: pointer;
     transition: transform 0.2s, background 0.3s;
   }
 
-  #yesBtn { background: black; color: white; z-index: 1; }
-  #noBtn  { background: white; color: black; position: absolute; z-index: 2; }
+  #yesBtn { background: black; color: white; }
+  #noBtn { background: white; color: black; position: absolute; }
 
   .buttons button:hover { transform: scale(1.1); }
 
-  /* Part Two */
-  #partTwo {
-    display:none;
-    width:100%; height:100%;
-    position:absolute; top:0; left:0;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    background: transparent;
-    opacity: 0;
-    transform: scale(0.8);
-    transition: opacity 1s ease, transform 1s ease;
+  /* Pop-up animation */
+  @keyframes boomPop {
+    0%   { opacity: 0; transform: scale(0.5); }
+    30%  { opacity: 1; transform: scale(1.3); }
+    60%  { opacity: 1; transform: scale(0.9); }
+    100% { opacity: 0; transform: scale(1); }
   }
-  #partTwo.active {
-    display:flex;
-    opacity: 1;
-    transform: scale(1);
+
+  .confession, .heart {
+    position: absolute;
+    font-weight: bold;
+    pointer-events: none;
+    user-select: none;
+    animation: boomPop 1s forwards;
   }
 
   #mainMessage {
@@ -85,37 +88,6 @@
     75% { text-shadow: 0 0 15px cyan, 0 0 25px skyblue; color: cyan; }
     100% { text-shadow: 0 0 10px pink, 0 0 20px hotpink; color: pink; }
   }
-
-  /* Boom Pop animation */
-  @keyframes boomPop {
-    0%   { opacity: 0; transform: scale(0.5); }
-    30%  { opacity: 1; transform: scale(1.3); }
-    60%  { opacity: 1; transform: scale(0.9); }
-    100% { opacity: 0; transform: scale(1); }
-  }
-
-  .confession, .heart {
-    position: absolute;
-    font-weight: bold;
-    pointer-events: none;
-    user-select: none;
-    animation: boomPop 1s forwards;
-  }
-
-  /* Final confession */
-  #finalConfession {
-    display: none;
-    font-size: 2.5rem;
-    font-weight: 700;
-    text-align: center;
-    color: red;
-    animation: glow 2s infinite alternate;
-    margin-top: 20px;
-  }
-  @keyframes glow {
-    from { text-shadow: 0 0 10px red, 0 0 20px pink; }
-    to   { text-shadow: 0 0 20px hotpink, 0 0 40px red; }
-  }
 </style>
 </head>
 <body>
@@ -125,92 +97,84 @@
   <h1>You can't escape from me Feri 😈🐥</h1>
   <p>Do you love me?</p>
   <div class="buttons">
-    <button id="yesBtn">Yes 💖</button>
-    <button id="noBtn">No 😈</button>
+    <button id="yesBtn">Yes</button>
+    <button id="noBtn">No</button>
   </div>
 </div>
 
 <!-- Part Two -->
-<div id="partTwo">
+<div id="partTwo" style="display:none; width:100%; height:100%; position:absolute; top:0; left:0;">
   <div id="mainMessage">The Eternal Love for Feri 💖🐥😈</div>
-  <div id="finalConfession">Forever Yours, Feri 💕</div>
 </div>
 
 <script>
+// Part One
 const noBtn = document.getElementById("noBtn");
 const yesBtn = document.getElementById("yesBtn");
 const partOne = document.getElementById("partOne");
 const partTwo = document.getElementById("partTwo");
-const finalConfession = document.getElementById("finalConfession");
 
-// Make No button escape always
-function moveNoBtn() {
+// Eternal escape mode for No button
+function foreverEscape() {
   const btnWidth = noBtn.offsetWidth;
   const btnHeight = noBtn.offsetHeight;
   const parentWidth = window.innerWidth;
   const parentHeight = window.innerHeight;
 
-  let newLeft, newTop;
-  do {
-    newLeft = Math.random() * (parentWidth - btnWidth);
-    newTop = Math.random() * (parentHeight - btnHeight);
-  } while (
-    Math.abs(newLeft - yesBtn.offsetLeft) < 150 &&
-    Math.abs(newTop - yesBtn.offsetTop) < 100
-  );
+  const newLeft = Math.random() * (parentWidth - btnWidth);
+  const newTop = Math.random() * (parentHeight - btnHeight);
 
   noBtn.style.left = newLeft + "px";
   noBtn.style.top = newTop + "px";
 }
-["mouseenter","click","touchstart"].forEach(evt=>{
-  noBtn.addEventListener(evt, moveNoBtn);
-});
 
-// Yes button -> start chaos
+// Make No button teleport every 700ms
+setInterval(foreverEscape, 700);
+
+// Still escape on hover or click
+noBtn.addEventListener("mouseenter", foreverEscape);
+noBtn.addEventListener("click", foreverEscape);
+
+// Yes button triggers Part Two
 yesBtn.addEventListener("click", () => {
   partOne.style.display = "none";
-  partTwo.classList.add("active");
+  partTwo.style.display = "block";
   startChaos();
 });
 
-// Chaos mode
+// Part Two Chaos
 function startChaos() {
   const colors = ["black","white","pink","skyblue","hotpink","cyan"];
   const loveText = "Love you Feri 💕";
   const cuteLines = [
-    "You are soooo cute 😍","Chubby cheeks 😋😋 Feri","Vampire 👿... let's burn world",
-    "So precious 💕 Feri 🐥","Pretty gorgeous eyes 😍","You are amazing 💖",
-    "Cutest smile 😁","You brighten my day ☀️","My sunshine 🌞",
-    "Adore you 💕","You make me smile 😊","Incredible ✨","Awesome 😘",
-    "Unforgettable 🌟","Perfect 😇","My favorite person 💗"
+    "You are soooo cute 😍","Chubby cheeks 😋😋 Feri","You are vampire 👿... let's burn world",
+    "So precious 💕 creation Feri 🐥","Pretty gorgeous eyes 😍","You are amazing 💖",
+    "You have the cutest smile 😁","You brighten my day ☀️","You are my sunshine 🌞",
+    "I adore you 💕","You make me smile 😊","You are incredible ✨","You are awesome 😘",
+    "I appreciate you ❤️‍🔥","You are unforgettable 🌟","You make life better 💖",
+    "I love your laugh 😂","You are perfect 😇","You are my favorite person 💗",
+    "You are special 💝"
   ];
+
   const fonts = ["Poppins", "Pacifico", "Press Start 2P", "Indie Flower", "Courier Prime"];
   const weights = ["400", "600", "700", "900"];
   const styles = ["normal", "italic"];
 
-  // Tab title blink
+  // Blinking tab title
   let toggle = true;
   setInterval(()=>{document.title = toggle?"The Eternal Love for Feri 💖🐥😈":"Love You 💕"; toggle=!toggle;},1000);
 
-  // Endless boom explosions
+  // Continuous spawning
   setInterval(spawnConfession, 200);
   setInterval(spawnHeart, 300);
 
-  // Burst on click
-  function chaosBurst() {
-    for(let i=0;i<10;i++){ spawnConfession(); }
-    for(let i=0;i<5;i++){ spawnHeart(); }
-    document.body.style.background = colors[Math.floor(Math.random()*colors.length)];
+  // Mega burst on click/tap
+  function megaBurst() {
+    for(let i=0; i<100; i++){ spawnConfession(); }
+    for(let i=0; i<100; i++){ spawnHeart(); }
   }
-  document.body.addEventListener("click", chaosBurst);
-  document.body.addEventListener("touchstart", chaosBurst);
-
-  // Mouse/touch trail hearts
-  document.addEventListener("mousemove", (e)=>spawnTrailHeart(e.pageX, e.pageY));
-  document.addEventListener("touchmove", (e)=>{
-    const t = e.touches[0];
-    spawnTrailHeart(t.pageX, t.pageY);
-  });
+  document.body.addEventListener("click", megaBurst);
+  document.body.addEventListener("touchstart", megaBurst);
 
   function spawnConfession() {
     const conf = document.createElement("span");
@@ -220,11 +184,14 @@ function startChaos() {
     conf.style.left = Math.random()*90 + "%";
     conf.style.color = colors[Math.floor(Math.random()*colors.length)];
     conf.style.fontSize = (Math.random()*20+12)+"px";
+
+    // Random font + weight + style
     conf.style.fontFamily = fonts[Math.floor(Math.random()*fonts.length)];
     conf.style.fontWeight = weights[Math.floor(Math.random()*weights.length)];
     conf.style.fontStyle = styles[Math.floor(Math.random()*styles.length)];
+
     document.body.appendChild(conf);
-    setTimeout(()=>conf.remove(),1000); // fast vanish
+    setTimeout(()=>conf.remove(),1000);
   }
 
   function spawnHeart() {
@@ -236,31 +203,10 @@ function startChaos() {
     heart.style.fontSize = (Math.random()*30+15)+"px";
     heart.style.color = colors[Math.floor(Math.random()*colors.length)];
     document.body.appendChild(heart);
-    setTimeout(()=>heart.remove(),1000); // fast vanish
-  }
-
-  function spawnTrailHeart(x,y){
-    const heart = document.createElement("span");
-    heart.textContent = "💖";
-    heart.style.position="absolute";
-    heart.style.left = x+"px";
-    heart.style.top = y+"px";
-    heart.style.pointerEvents="none";
-    heart.style.fontSize = "16px";
-    heart.style.opacity = "1";
-    heart.style.transition = "all 1s ease";
-    document.body.appendChild(heart);
-
-    setTimeout(()=>{
-      heart.style.top = (y-30)+"px";
-      heart.style.opacity="0";
-    },50);
     setTimeout(()=>heart.remove(),1000);
   }
-
-  // Reveal final confession
-  setTimeout(()=>{ finalConfession.style.display="block"; },10000);
 }
 </script>
+
 </body>
 </html>
